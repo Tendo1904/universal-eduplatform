@@ -4,20 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    Handles database schema migrations.
+
+        This class is responsible for managing and executing migrations between different database schema versions.
+
+        Attributes:
+            dependencies: A list of other migration classes that this migration depends on.
+            operations: A list of operations that define the changes to be applied to the database schema.
+
+        Methods:
+            (List methods here if there are any)
+
+        The `dependencies` attribute tracks any migrations that must be executed before this one, ensuring a correct order of operations.
+        The `operations` attribute defines the specific changes to be applied during the migration process.
+    """
 
     dependencies = [
-        ('tests', '0001_initial'),
+        ("tests", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='question',
-            name='question_points',
+            model_name="question",
+            name="question_points",
             field=models.IntegerField(default=1),
         ),
         migrations.AlterField(
-            model_name='result',
-            name='points_user',
+            model_name="result",
+            name="points_user",
             field=models.FloatField(blank=True, null=True),
         ),
     ]

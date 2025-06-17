@@ -4,6 +4,7 @@ from app.config import db
 from app.models.theme import Theme as ThemeModel
 from app.schemas.theme import CreateThemeRequest, ThemeResponse
 
+
 async def create_theme(request: CreateThemeRequest) -> ThemeResponse:
     """
     Сохраняем новую тему в БД и возвращаем её Pydantic-модель.
@@ -14,17 +15,15 @@ async def create_theme(request: CreateThemeRequest) -> ThemeResponse:
     db.close()
     return ThemeResponse(id=theme.id, name=theme.name, descr=theme.descr)
 
+
 async def delete_theme(theme_id: int) -> None:
     """
     Удаляем тему по ID. Если темы нет — не даём упасть.
     """
     db.connect(reuse_if_open=True)
-    (ThemeModel
-        .delete()
-        .where(ThemeModel.id == theme_id)
-        .execute()
-    )
+    (ThemeModel.delete().where(ThemeModel.id == theme_id).execute())
     db.close()
+
 
 async def get_all_themes() -> List[ThemeResponse]:
     """
@@ -32,11 +31,11 @@ async def get_all_themes() -> List[ThemeResponse]:
     """
     db.connect(reuse_if_open=True)
     themes = [
-        ThemeResponse(id=t.id, name=t.name, descr=t.descr)
-        for t in ThemeModel.select()
+        ThemeResponse(id=t.id, name=t.name, descr=t.descr) for t in ThemeModel.select()
     ]
     db.close()
     return themes
+
 
 async def get_theme_by_id(theme_id: int) -> ThemeResponse:
     """

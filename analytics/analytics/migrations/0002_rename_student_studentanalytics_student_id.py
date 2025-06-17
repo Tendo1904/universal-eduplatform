@@ -4,15 +4,29 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+    """
+    Represents a database migration that manages schema changes and data updates.
+
+    This class is designed to handle the execution of database migrations, allowing
+    for the application of operations that alter the database schema or data according
+    to defined dependencies and operations.
+
+    Attributes:
+        dependencies: A list of migration dependencies that this migration relies on.
+        operations: A list of operations that define the changes to be applied to the database.
+
+    Methods:
+        (No methods listed for this class.)
+    """
 
     dependencies = [
-        ('analytics', '0001_initial'),
+        ("analytics", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='studentanalytics',
-            old_name='student',
-            new_name='student_id',
+            model_name="studentanalytics",
+            old_name="student",
+            new_name="student_id",
         ),
     ]

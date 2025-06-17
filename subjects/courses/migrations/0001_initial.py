@@ -5,45 +5,117 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    Handles database schema migrations.
+
+        This class is responsible for managing the migration of database schemas,
+        allowing for changes and updates to be applied in a systematic and versioned
+        manner. It ensures that all necessary operations are performed in the correct
+        order and that the dependencies between migrations are properly handled.
+
+        Attributes:
+            initial: Indicates whether this is the initial migration.
+            dependencies: Lists the migrations that this migration depends on.
+            operations: Contains the operations that define the changes to be applied.
+
+        Methods:
+            (list of methods if any)
+
+        Summary:
+            The initial attribute specifies if this migration is the first in the sequence,
+            dependencies attribute tracks other migrations that need to be applied beforehand,
+            and operations attribute outlines the specific changes to be executed on the
+            database schema.
+    """
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Subject',
+            name="Subject",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name_subject', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name_subject", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Student_Course_Subject',
+            name="Student_Course_Subject",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('id_student', models.IntegerField(blank=True, null=True)),
-                ('id_expert', models.IntegerField(blank=True, null=True)),
-                ('id_subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course_id_subject', to='courses.subject')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("id_student", models.IntegerField(blank=True, null=True)),
+                ("id_expert", models.IntegerField(blank=True, null=True)),
+                (
+                    "id_subject",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="course_id_subject",
+                        to="courses.subject",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Course',
+            name="Course",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name_course', models.CharField(max_length=100)),
-                ('id_expert', models.IntegerField(blank=True, null=True)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('id_subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.subject')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name_course", models.CharField(max_length=100)),
+                ("id_expert", models.IntegerField(blank=True, null=True)),
+                ("description", models.TextField(blank=True, null=True)),
+                (
+                    "id_subject",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="courses.subject",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Theme',
+            name="Theme",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name_theme', models.CharField(max_length=100)),
-                ('id_subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.subject')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name_theme", models.CharField(max_length=100)),
+                (
+                    "id_subject",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="courses.subject",
+                    ),
+                ),
             ],
         ),
     ]

@@ -4,23 +4,58 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    Handles database schema migrations.
+
+        This class is responsible for managing changes to the database schema
+        over time. It allows for defining initial states, configuring
+        dependencies between migrations, and executing various operations
+        related to the migration process.
+
+        Attributes:
+            initial: Indicates the initial state of the migration.
+            dependencies: Lists other migrations that this migration depends on.
+            operations: Defines the operations to be performed during the migration.
+
+        Methods:
+            (methods not specified)
+
+        Each attribute plays a crucial role in the migration process,
+        with `initial` providing the starting point, `dependencies`
+        ensuring the correct order of migrations, and `operations`
+        detailing the specific changes to be made to the database.
+    """
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='StudentAnalytics',
+            name="StudentAnalytics",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('student_id', models.IntegerField(help_text='Unique identifier of the student.', unique=True)),
-                ('analyticity', models.IntegerField(default=0, help_text='Analyticity score of the student.')),
-                ('leadership', models.IntegerField(default=0, help_text='Leadership score of the student.')),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "student_id",
+                    models.IntegerField(
+                        help_text="Unique identifier of the student.", unique=True
+                    ),
+                ),
+                (
+                    "analyticity",
+                    models.IntegerField(
+                        default=0, help_text="Analyticity score of the student."
+                    ),
+                ),
+                (
+                    "leadership",
+                    models.IntegerField(
+                        default=0, help_text="Leadership score of the student."
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Student Analytics',
+                "verbose_name_plural": "Student Analytics",
             },
         ),
     ]

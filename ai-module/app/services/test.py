@@ -5,13 +5,14 @@ from app.schemas.test import (
     TestCreateRequest,
     TestCreateResponse,
     TestPassRequest,
-    TestPassResponse
+    TestPassResponse,
 )
 from app.models.theme import Theme
 from peewee import DoesNotExist
 from pprint import pprint
 
 MODEL = "gpt-4o-mini"
+
 
 async def create_test(request: TestCreateRequest) -> TestCreateResponse:
     """
@@ -32,12 +33,12 @@ async def create_test(request: TestCreateRequest) -> TestCreateResponse:
         "marking the correct one (or many correct ones). "
         "Output strictly in JSON format, e.g.:\n"
         "{\n"
-        "  \"question\": \"...\",\n"
-        "  \"answers\": [\n"
-        "    {\"text\": \"...\", \"is_correct\": true},\n"
-        "    {\"text\": \"...\", \"is_correct\": false},\n"
-        "    {\"text\": \"...\", \"is_correct\": false},\n"
-        "    {\"text\": \"...\", \"is_correct\": false}\n"
+        '  "question": "...",\n'
+        '  "answers": [\n'
+        '    {"text": "...", "is_correct": true},\n'
+        '    {"text": "...", "is_correct": false},\n'
+        '    {"text": "...", "is_correct": false},\n'
+        '    {"text": "...", "is_correct": false}\n'
         "  ]\n"
         "}"
     )
@@ -47,11 +48,7 @@ async def create_test(request: TestCreateRequest) -> TestCreateResponse:
 
     # 3. Вызываем модель
     raw = g4f.ChatCompletion.create(
-        model=MODEL,
-        messages=[
-            {"role": "user", "content": user_prompt}
-        ],
-        stream=False
+        model=MODEL, messages=[{"role": "user", "content": user_prompt}], stream=False
     ).strip()
 
     pprint("Answer:")
@@ -63,8 +60,7 @@ async def create_test(request: TestCreateRequest) -> TestCreateResponse:
         question = data["question"]
         answers_raw = data["answers"]
     except Exception as e:
-        raise ValueError(
-            f"Failed to parse JSON from model: {e}\nRaw response: {raw}")
+        raise ValueError(f"Failed to parse JSON from model: {e}\nRaw response: {raw}")
 
     # 5. Преобразуем в нужный формат List[Dict]
     answers: List[Dict[str, str]] = []
@@ -73,11 +69,7 @@ async def create_test(request: TestCreateRequest) -> TestCreateResponse:
         correct = ans.get("is_correct", False)
         answers.append({text: "t" if correct else "f"})
 
-    return TestCreateResponse(
-        theme=request.theme,
-        question=question,
-        answers=answers
-    )
+    return TestCreateResponse(theme=request.theme, question=question, answers=answers)
 
 
 async def pass_test(request: TestPassRequest) -> TestPassResponse:
@@ -103,8 +95,7 @@ async def pass_test(request: TestPassRequest) -> TestPassResponse:
         raise ValueError("Expected exactly 4 answer options")
 
     opts_text = "\n".join(
-        f"{letter}) {text}"
-        for letter, text in zip(["A", "B", "C", "D"], options)
+        f"{letter}) {text}" for letter, text in zip(["A", "B", "C", "D"], options)
     )
 
     prompt = (
@@ -115,7 +106,7 @@ async def pass_test(request: TestPassRequest) -> TestPassResponse:
         f"Options:\n{opts_text}"
         "Return only letters (A, B, C or D). There can be multiple answers."
         "Return all letters (A, B, C, D) corresponding to correct answers, "
-        "as a JSON array, e.g. [\"A\",\"C\"]."
+        'as a JSON array, e.g. ["A","C"].'
     )
 
     pprint("Prompt:")
@@ -128,7 +119,7 @@ async def pass_test(request: TestPassRequest) -> TestPassResponse:
             # {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ],
-        stream=False
+        stream=False,
     ).strip()
 
     pprint("Answer:")
@@ -137,6 +128,7 @@ async def pass_test(request: TestPassRequest) -> TestPassResponse:
     # 5. Парсим JSON-массив букв
     try:
         import json
+
         letters = json.loads(raw)
         if not isinstance(letters, list):
             raise ValueError("Response is not a JSON list")
@@ -144,8 +136,7 @@ async def pass_test(request: TestPassRequest) -> TestPassResponse:
         valid = {"A", "B", "C", "D"}
         right = [ltr.upper() for ltr in letters if ltr.upper() in valid]
     except Exception as e:
-        raise ValueError(
-            f"Failed to parse list of answers: {e}\nRaw response: {raw}")
+        raise ValueError(f"Failed to parse list of answers: {e}\nRaw response: {raw}")
 
     if not right:
         raise ValueError(f"No valid answer letters found in response: {raw}")
