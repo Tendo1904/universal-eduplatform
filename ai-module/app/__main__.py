@@ -5,6 +5,15 @@ from app.config import db
 from app.models.theme import Theme
 
 def create_tables():
+    """
+    Creates tables in the database for the Theme model.
+    
+    Args:
+        No parameters.
+    
+    Returns:
+        None.
+    """
     db.connect(reuse_if_open=True)
     db.create_tables([Theme])
     db.close()

@@ -5,6 +5,15 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    """
+    Class to represent a migration object that manages database migrations.
+    
+        Class Attributes:
+        - initial: Represents the initial state of the migration.
+        - dependencies: Represents the dependencies of the migration.
+        - operations: Represents the operations to be applied during migration.
+    """
+
 
     initial = True
 

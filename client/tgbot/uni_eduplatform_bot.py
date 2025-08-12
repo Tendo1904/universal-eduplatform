@@ -9,11 +9,34 @@ bot = telebot.TeleBot(TOKEN)
 
 
 def connect_db():
+    """
+    Connect to a SQLite database.
+    
+    Args:
+        None
+    
+    Returns:
+        SQLite connection object for the database.
+    """
     return sqlite3.connect('test_bot.db')
 
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
+    """
+    Summary:
+        Display a start message with navigation buttons in a chat using the Telegram bot.
+    
+    Parameters:
+        message: The incoming message object from the chat.
+    
+    Args:
+        message: telegram.Message
+            The incoming message object from the chat.
+    
+    Return:
+        This method does not return any value.
+    """
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     register_button = types.KeyboardButton('Регистрация')
@@ -24,6 +47,21 @@ def start_message(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Регистрация')
 def register(message):
+    """
+    Registers a user by checking if the user is already registered based on the given message. If the user is not registered, prompts the user to enter a phone number for registration.
+    
+    Parameters:
+    - message: the message object containing information about the chat
+    
+    Returns:
+    None
+    
+    Args:
+    - message: the message object containing information about the chat
+    
+    Return:
+    None
+    """
     chat_id = message.chat.id
     conn = connect_db()
     cursor = conn.cursor()
@@ -37,6 +75,22 @@ def register(message):
 
 
 def process_register_phone(message):
+    """
+    Summary:
+        Process registration of a phone number.
+    
+    Args:
+        message: Represents the message object containing chat and phone information.
+    
+    Returns:
+        None
+    
+    Args:
+        message: Represents the message object containing chat and phone information.
+    
+    Returns:
+        None
+    """
     chat_id = message.chat.id
     phone = message.text
     conn = connect_db()
@@ -51,6 +105,20 @@ def process_register_phone(message):
 
 
 def process_register_password(message, phone):
+    """
+    Processes the registration password entered by the user and prompts for their first name.
+    
+    Parameters:
+    - message: The message object containing the user input.
+    - phone: The user's phone number used for registration.
+    
+    Args:
+    - message: The message object containing the user input.
+    - phone: The user's phone number used for registration.
+    
+    Returns:
+    None
+    """
     chat_id = message.chat.id
     password = message.text
     msg = bot.send_message(chat_id, "Введите ваше имя:")
@@ -58,6 +126,22 @@ def process_register_password(message, phone):
 
 
 def process_register_first_name(message, phone, password):
+    """
+    Processes the registration of a user's first name by sending a message to the chat for input.
+    
+    Parameters:
+    - message: The message object containing user input.
+    - phone: The phone number of the user.
+    - password: The user's password for registration.
+    
+    Args:
+    - message: The message object containing user input.
+    - phone: The phone number of the user.
+    - password: The user's password for registration.
+    
+    Returns:
+    None
+    """
     chat_id = message.chat.id
     first_name = message.text
     msg = bot.send_message(chat_id, "Введите вашу фамилию:")
@@ -65,6 +149,18 @@ def process_register_first_name(message, phone, password):
 
 
 def process_register_last_name(message, phone, password, first_name):
+    """
+    Processes the registration of a user's last name and stores it in the database.
+        
+        Parameters:
+        - message: The message object containing chat information.
+        - phone: The user's phone number.
+        - password: The user's password.
+        - first_name: The user's first name.
+        
+        Returns:
+        - None
+    """
     chat_id = message.chat.id
     last_name = message.text
     conn = connect_db()
@@ -85,12 +181,33 @@ def process_register_last_name(message, phone, password, first_name):
 
 @bot.message_handler(func=lambda message: message.text == 'Авторизация')
 def login(message):
+    """
+    Logs in a user by prompting them to enter their phone number.
+    
+    Args:
+    - message: The message object containing information for the chat session.
+    
+    Returns:
+    None
+    """
     chat_id = message.chat.id
     msg = bot.send_message(chat_id, "Введите номер телефона:")
     bot.register_next_step_handler(msg, process_login_phone)
 
 
 def process_login_phone(message):
+    """
+    Process the login phone number provided by the user.
+    
+    Parameters:
+    - message: The message object containing information about the incoming message.
+    
+    Args:
+    - message (object): The message object containing information about the incoming message.
+    
+    Return:
+    - None
+    """
     chat_id = message.chat.id
     phone = message.text
     conn = connect_db()
@@ -108,6 +225,16 @@ def process_login_phone(message):
 
 
 def process_login_password(message, phone):
+    """
+    Processes login and password for user authentication.
+        
+        Parameters:
+        - message: Represents the message object containing user input data.
+        - phone: Represents the user's phone number used for login.
+        
+        Returns:
+        None
+    """
     chat_id = message.chat.id
     password = message.text
     conn = connect_db()
@@ -134,6 +261,15 @@ def process_login_password(message, phone):
 
 @bot.message_handler(func=lambda message: message.text == 'Создать тест')
 def createtest(message):
+    """
+    Creates a new test based on the message received from the user.
+        
+        Parameters:
+        - message: The message object containing information about the chat and user.
+        
+        Returns:
+        None
+    """
     chat_id = message.chat.id
     conn = connect_db()
     cursor = conn.cursor()
@@ -149,6 +285,15 @@ def createtest(message):
 
 
 def process_create_topic(message):
+    """
+    Processes the creation of a new topic for user tests in a chat.
+    
+    Args:
+    - message: The message object containing information about the chat and topic.
+    
+    Returns:
+    - None
+    """
     chat_id = message.chat.id
     topic = message.text
     user_tests[chat_id] = {'topic': topic, 'questions': []}
@@ -157,6 +302,15 @@ def process_create_topic(message):
 
 
 def process_create_difficulty(message):
+    """
+    Processes the creation of a difficulty level for a user in a chat, based on the received message.
+    
+    Args:
+    - message: The message object containing information about the chat and user input.
+    
+    Return:
+    None
+    """
     chat_id = message.chat.id
     difficulty = message.text.lower()
     if difficulty in ['легкий', 'средний', 'сложный']:
@@ -169,6 +323,15 @@ def process_create_difficulty(message):
 
 
 def process_create_question(message):
+    """
+    Processes the creation of a new question in the chat. Appends the new question to the user_tests dictionary under the specific chat_id with empty lists for answers and correct answers. Sets up a custom reply keyboard markup for interaction. Prompts for an answer input or completion confirmation.
+    
+    Args:
+    - message: The message object containing the question text and chat information.
+    
+    Return:
+    - None
+    """
     chat_id = message.chat.id
     question = message.text
     user_tests[chat_id]['questions'].append({'question': question, 'answers': [], 'correct_answers': []})
@@ -181,6 +344,15 @@ def process_create_question(message):
 
 
 def process_create_answers(message):
+    """
+    Process the creation of answers for a chat bot quiz question.
+    
+    Args:
+        message: The message object containing user input for creating answers.
+    
+    Returns:
+        None
+    """
     chat_id = message.chat.id
     if message.text == 'Готово':
         msg = bot.send_message(chat_id, "Введите правильный ответ (если несколько, через запятую):")
@@ -193,6 +365,15 @@ def process_create_answers(message):
 
 
 def process_create_correct_answer(message):
+    """
+    Process and store correct answers for a question in a chat session.
+    
+    Args:
+    - message: the message object containing chat information and user input.
+    
+    Return:
+    None
+    """
     chat_id = message.chat.id
     correct_answers = message.text.split(',')
     user_tests[chat_id]['questions'][-1]['correct_answers'] = correct_answers
@@ -201,6 +382,15 @@ def process_create_correct_answer(message):
 
 
 def process_add_more_questions(message):
+    """
+    Processes adding more questions to a test based on user input.
+    
+    Args:
+    - message: Represents the message object containing user input.
+    
+    Return:
+    - None
+    """
     chat_id = message.chat.id
     if message.text.lower() == 'да':
         msg = bot.send_message(chat_id, "Введите вопрос:")
@@ -229,6 +419,15 @@ def process_add_more_questions(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Пройти тест')
 def starttest(message):
+    '''
+    Handles starting a test based on the user's message. If the user is authorized, prompts the user to enter the test ID; otherwise, prompts the user to authenticate or register.
+    
+    Args:
+        message: The message object containing information about the chat.
+    
+    Returns:
+        None
+    '''
     chat_id = message.chat.id
     conn = connect_db()
     cursor = conn.cursor()
@@ -244,6 +443,19 @@ def starttest(message):
 
 
 def process_test_id(message):
+    """
+    Summary:
+        Process the test ID received in the message and handle based on the availability of the test.
+    
+    Description:
+        - message: The message object containing information about the chat and text input.
+        
+    Args:
+        message (object): The message object containing information about the chat and text input.
+        
+    Return:
+        None
+    """
     chat_id = message.chat.id
     test_id = int(message.text)
     conn = connect_db()
@@ -261,6 +473,23 @@ def process_test_id(message):
 
 
 def process_test_difficulty(message, test_id):
+    """
+    Processes the test difficulty based on the provided message and test ID.
+    
+    Parameters:
+    - message: The message object containing information about the user input.
+    - test_id: The ID of the test for which the difficulty needs to be processed.
+    
+    Args:
+    - chat_id: The ID of the chat to send messages.
+    - difficulty: The difficulty level of the test obtained from the user input.
+    - conn: The database connection object.
+    - cursor: The database cursor object.
+    - test: The retrieved test information based on the test ID and difficulty level.
+    
+    Return:
+    This method does not return any value.
+    """
     chat_id = message.chat.id
     difficulty = message.text.lower()
     conn = connect_db()
@@ -277,6 +506,22 @@ def process_test_difficulty(message, test_id):
 
 
 def send_question(chat_id, test_id, question_index):
+    """
+    Sends a question to a chat, including its answers for selection.
+    
+    Parameters:
+    - chat_id: The ID of the chat to send the question.
+    - test_id: The ID of the test from which the question is selected.
+    - question_index: The index of the question within the test.
+    
+    Args:
+    - chat_id (int): The ID of the chat to send the question.
+    - test_id (int): The ID of the test from which the question is selected.
+    - question_index (int): The index of the question within the test.
+    
+    Returns:
+    This method does not return any value.
+    """
     conn = connect_db()
     cursor = conn.cursor()
 
@@ -299,6 +544,17 @@ def send_question(chat_id, test_id, question_index):
 
 
 def process_test_answer(message, test_id, question_index):
+    """
+    Processes the user's submitted answers for a test question, validates them against the correct answers stored in the database, updates the user's score, and sends appropriate feedback messages based on the correctness of the answers.
+    
+    Args:
+        message: The message object containing the user's input.
+        test_id: The identifier of the ongoing test.
+        question_index: The index of the current question being answered.
+    
+    Return:
+        None
+    """
     chat_id = message.chat.id
     selected_answers = message.data.split('_')
     question_id = int(selected_answers[0])
@@ -330,6 +586,23 @@ def process_test_answer(message, test_id, question_index):
 
 
 def calculate_mean_without_outliers(scores):
+    """
+    Calculate mean of scores without including outliers.
+    
+    Parameters:
+    - scores: A list of numeric values representing individual scores.
+    
+    Returns:
+    - float: The mean value of scores after removing outliers. If there are no scores within the range of (lower_bound, upper_bound),
+      it returns 0.
+      
+    Args:
+    - scores (list): A list of numeric values representing individual scores.
+    
+    Return:
+    - float: The mean value of scores after removing outliers. If there are no scores within the range of (lower_bound, upper_bound),
+      it returns 0.
+    """
     q1 = np.percentile(scores, 25)
     q3 = np.percentile(scores, 75)
     iqr = q3 - q1
@@ -342,10 +615,28 @@ def calculate_mean_without_outliers(scores):
 
 
 def calculate_median(scores):
+    """
+    Calculate the median value of the given scores.
+    
+    Args:
+    - scores (list of int/float): A list of numerical values for which the median will be calculated.
+    
+    Returns:
+    - float: The median value of the input scores.
+    """
     return np.median(scores)
 
 
 def calculate_creativity(question_scores):
+    """
+    Calculate creativity metric based on question scores.
+    
+    Args:
+    - question_scores (list): A list of scores representing responses to creativity questions.
+    
+    Return:
+    - float: The calculated creativity metric. This metric is derived by calculating the interquartile range divided by the median score. If the median score is 0, the result will be 0 as well.
+    """
     iq_range = np.percentile(question_scores, 75) - np.percentile(question_scores, 25)
     median_score = np.median(question_scores)
     if median_score == 0:
@@ -355,6 +646,21 @@ def calculate_creativity(question_scores):
 
 @bot.message_handler(func=lambda message: message.text == 'Посмотреть рейтинг')
 def request_topic_for_rating(message):
+    """
+    Requests a topic for rating based on the received message.
+    
+    Parameters:
+    - message: The message object containing the chat information.
+    
+    Returns:
+    None
+    
+    Args:
+    - message (object): The message object containing chat information.
+    
+    Return:
+    None
+    """
     chat_id = message.chat.id
     conn = connect_db()
     cursor = conn.cursor()
@@ -370,6 +676,19 @@ def request_topic_for_rating(message):
 
 
 def view_rating(message):
+    """
+    Summary:
+        View the rating of users based on test results for a specific topic.
+    
+    Parameters:
+        message: Telegram message object containing information related to the chat and text message.
+    
+    Args:
+        message (Telegram message object): Contains information related to the chat and text message.
+    
+    Return:
+        None
+    """
     chat_id = message.chat.id
     topic_name = message.text
     conn = connect_db()

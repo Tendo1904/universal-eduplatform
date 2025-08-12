@@ -7,11 +7,11 @@ from tests import models as tests_models
 
 def convert_to_five_point_scale(rcv):
     """
-    Convert a numeric value to a five-point scale.
-
+    Convert a numeric value to a five-point scale based on predefined thresholds.
+    
     Args:
         rcv (int or float): Numeric value to convert.
-
+        
     Returns:
         int: Converted value mapped to a five-point scale.
     """
@@ -28,10 +28,10 @@ def convert_to_five_point_scale(rcv):
 def convert_analyticity_to_five_point_scale(analyticity_percentage):
     """
     Convert analyticity percentage to a five-point scale.
-
+    
     Args:
         analyticity_percentage (float): Analyticity percentage value.
-
+    
     Returns:
         int: Converted value mapped to a five-point scale.
     """
@@ -50,11 +50,11 @@ def convert_analyticity_to_five_point_scale(analyticity_percentage):
 def calculate_analyticity(student_id, test_id):
     """
     Calculate analyticity score for a student on a specific test.
-
+    
     Args:
         student_id (int): ID of the student.
         test_id (int): ID of the test.
-
+    
     Returns:
         int or Error: Calculated analyticity score mapped to a five-point scale,
                     or ValidationError if calculation could not be performed.
@@ -79,11 +79,11 @@ def calculate_analyticity(student_id, test_id):
 
 def calculate_leadership(id_student):
     """
-    Calculate leadership score for a student based on their latest test.
-
+    Calculate leadership score for a student based on the responses to their latest test.
+    
     Args:
         id_student (int): ID of the student.
-
+    
     Returns:
         int: Calculated leadership score mapped to a five-point scale.
     """
