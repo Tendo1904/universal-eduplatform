@@ -5,7 +5,15 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """
+    Run administrative tasks.
+    
+    Args:
+        None
+    
+    Returns:
+        None
+    """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'QuizPlatform.settings')
     try:
         from django.core.management import execute_from_command_line

@@ -6,7 +6,13 @@ from app.schemas.theme import CreateThemeRequest, ThemeResponse
 
 async def create_theme(request: CreateThemeRequest) -> ThemeResponse:
     """
-    Сохраняем новую тему в БД и возвращаем её Pydantic-модель.
+    Create a new theme in the database and return its Pydantic model.
+    
+    Args:
+        request (CreateThemeRequest): The request object containing the details of the theme to be created.
+    
+    Returns:
+        ThemeResponse: The Pydantic model representing the created theme.
     """
     db.connect(reuse_if_open=True)
     theme = ThemeModel.create(name=request.name, descr=request.descr)
@@ -17,6 +23,12 @@ async def create_theme(request: CreateThemeRequest) -> ThemeResponse:
 async def delete_theme(theme_id: int) -> None:
     """
     Удаляем тему по ID. Если темы нет — не даём упасть.
+    
+    Args:
+        theme_id (int): Уникальный идентификатор темы, которую нужно удалить.
+    
+    Returns:
+        None
     """
     db.connect(reuse_if_open=True)
     (ThemeModel
@@ -28,7 +40,13 @@ async def delete_theme(theme_id: int) -> None:
 
 async def get_all_themes() -> List[ThemeResponse]:
     """
-    Возвращаем список всех тем.
+    Returns a list of all themes.
+    
+    Args:
+        No input arguments.
+    
+    Returns:
+        List[ThemeResponse]: A list of ThemeResponse objects containing theme information such as id, name, and description.
     """
     db.connect(reuse_if_open=True)
     themes = [
@@ -40,7 +58,13 @@ async def get_all_themes() -> List[ThemeResponse]:
 
 async def get_theme_by_id(theme_id: int) -> ThemeResponse:
     """
-    Возвращаем одну тему или кидаем исключение.
+    Get a theme by its ID from the database and return its details if found, otherwise raise an exception.
+    
+    Args:
+        theme_id (int): The ID of the theme to retrieve.
+    
+    Returns:
+        ThemeResponse: An object containing the ID, name, and description of the retrieved theme.
     """
     db.connect(reuse_if_open=True)
     try:

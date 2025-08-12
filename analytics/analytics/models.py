@@ -4,14 +4,15 @@ from django.contrib.auth.models import User
 
 class StudentAnalytics(models.Model):
     """
-    Model representing analytics data for a student.
-
-    Attributes:
-        id (AutoField): Primary key for the StudentAnalytics model.
-        student_id (IntegerField): Unique identifier of the student.
-        analyticity (IntegerField): Analyticity score of the student, default is 0.
-        leadership (IntegerField): Leadership score of the student, default is 0.
+    Analyze student data and provide insights and statistics for educational purposes.
+    
+        Attributes:
+            id (AutoField): Primary key for the StudentAnalytics model.
+            student_id (IntegerField): Unique identifier of the student.
+            analyticity (IntegerField): Analyticity score of the student, default is 0.
+            leadership (IntegerField): Leadership score of the student, default is 0.
     """
+
 
     id = models.AutoField(primary_key=True)
     student_id = models.IntegerField(unique=True, null=False, help_text="Unique identifier of the student.")
@@ -23,4 +24,13 @@ class StudentAnalytics(models.Model):
         verbose_name_plural = "Student Analytics"
 
     def __str__(self):
+        """
+        Return a string representation of the StudentAnalytics object.
+        
+        Args:
+        - self (StudentAnalytics): The StudentAnalytics object itself.
+        
+        Returns:
+        - str: A string that includes the student_id property of the StudentAnalytics object.
+        """
         return f"StudentAnalytics: student_id {self.student_id}"

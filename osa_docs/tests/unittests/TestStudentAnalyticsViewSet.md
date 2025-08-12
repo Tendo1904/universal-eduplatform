@@ -1,0 +1,5 @@
+# Teststudentanalyticsviewset
+
+
+
+::: tests.unittests.TestStudentAnalyticsViewSet

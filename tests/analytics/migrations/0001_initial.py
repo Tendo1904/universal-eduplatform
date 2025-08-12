@@ -4,6 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    Class representing a migration process for a database.
+    
+        Class Attributes:
+        - initial: Represents the initial state of the database before migration.
+        - dependencies: Represents any dependencies required for the migration.
+        - operations: Represents the operations to be applied during the migration process.
+    """
+
 
     initial = True
 

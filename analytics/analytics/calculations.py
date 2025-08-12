@@ -8,12 +8,15 @@ from tests import models as tests_models
 def convert_to_five_point_scale(rcv):
     """
     Convert a numeric value to a five-point scale.
-
+    
     Args:
         rcv (int or float): Numeric value to convert.
-
+    
     Returns:
         int: Converted value mapped to a five-point scale.
+    
+    WHY:
+    The method converts a given numeric value to a five-point scale based on specific criteria. Values below 10 are mapped to 2, values between 10 and 20 are mapped to 3, values between 20 and 30 are mapped to 4, and values above 30 are mapped to 5.
     """
     if rcv < 10:
         return 2
@@ -28,12 +31,17 @@ def convert_to_five_point_scale(rcv):
 def convert_analyticity_to_five_point_scale(analyticity_percentage):
     """
     Convert analyticity percentage to a five-point scale.
-
+    
     Args:
-        analyticity_percentage (float): Analyticity percentage value.
-
+        analyticity_percentage (float): The analyticity percentage value to be converted.
+    
     Returns:
-        int: Converted value mapped to a five-point scale.
+        int: The converted value mapped to a five-point scale. Corresponding values are:
+        - 5 for percentage >= 75
+        - 4 for 50 <= percentage < 75
+        - 3 for 30 <= percentage < 50
+        - 2 for 20 <= percentage < 30
+        - 1 for percentage < 20
     """
     if analyticity_percentage >= 75:
         return 5
@@ -49,15 +57,15 @@ def convert_analyticity_to_five_point_scale(analyticity_percentage):
 
 def calculate_analyticity(student_id, test_id):
     """
-    Calculate analyticity score for a student on a specific test.
-
+    Calculate analyticity score for a student based on their performance in a specific test.
+    
     Args:
         student_id (int): ID of the student.
         test_id (int): ID of the test.
-
+    
     Returns:
-        int or Error: Calculated analyticity score mapped to a five-point scale,
-                    or ValidationError if calculation could not be performed.
+        int or Error: The calculated analyticity score mapped to a five-point scale,
+                    or ValidationError if the calculation cannot be performed.
     """
 
     # Getting the maximum score on a test
@@ -80,10 +88,10 @@ def calculate_analyticity(student_id, test_id):
 def calculate_leadership(id_student):
     """
     Calculate leadership score for a student based on their latest test.
-
+    
     Args:
         id_student (int): ID of the student.
-
+    
     Returns:
         int: Calculated leadership score mapped to a five-point scale.
     """

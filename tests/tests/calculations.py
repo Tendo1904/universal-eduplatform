@@ -1,6 +1,15 @@
 from .models import Test, Question, Answer,Solutions, Result
 
 def formula_1(id_result):
+    """
+    Calculates the total points obtained in a test based on the given result ID.
+    
+    Args:
+    - id_result: The primary key of the result for which points are to be calculated.
+    
+    Returns:
+    The total points obtained in the test.
+    """
     result = Result.objects.get(pk=id_result)
     questions = Question.objects.filter(id_test=result.id_test)
     points_total = 0

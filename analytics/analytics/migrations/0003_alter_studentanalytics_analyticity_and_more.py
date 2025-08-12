@@ -4,6 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    This class represents a migration object that handles database schema migration tasks.
+    
+        Class Attributes:
+        - dependencies: A list of other migration classes that this migration depends on.
+        - operations: A list of database schema operations defined in this migration.
+    
+        The Migration class provides methods to execute and revert database schema operations during migration process.
+    """
+
 
     dependencies = [
         ('analytics', '0002_rename_student_studentanalytics_student_id'),

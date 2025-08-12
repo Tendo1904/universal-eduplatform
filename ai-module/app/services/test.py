@@ -15,8 +15,13 @@ MODEL = "gpt-4o-mini"
 
 async def create_test(request: TestCreateRequest) -> TestCreateResponse:
     """
-    Генерирует один вопрос с четырьмя вариантами ответа по заданной теме.
-    Сохраняет контекст темы из БД и обращается к модели через g4f.
+    Creates a test request with a question and four answer options related to the specified theme.
+    
+    Args:
+        request (TestCreateRequest): An object containing information about the theme for which the test is generated.
+        
+    Return:
+        TestCreateResponse: An object containing the theme, the generated question, and the answer options.
     """
     # 1. Получаем тему из БД
     try:
@@ -82,7 +87,13 @@ async def create_test(request: TestCreateRequest) -> TestCreateResponse:
 
 async def pass_test(request: TestPassRequest) -> TestPassResponse:
     """
-    Определяет верный ответ (букву A, B, C или D) для переданного вопроса и вариантов.
+    Determines the correct answer (letter A, B, C, or D) for the given question and options.
+    
+    Args:
+        request (TestPassRequest): An object containing theme, question, and answers data.
+    
+    Returns:
+        TestPassResponse: An object with the correct answer(s) represented as a list of letters (A, B, C, or D).
     """
 
     try:

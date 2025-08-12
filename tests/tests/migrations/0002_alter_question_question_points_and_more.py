@@ -4,6 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """
+    Class representing a migration task to be executed on a database. 
+    
+        Class Attributes:
+        - dependencies: List of other migration tasks that this task depends on.
+        - operations: List of operations to be executed for the migration task.
+    
+        This class defines a migration task with dependencies and operations to be executed.
+    """
+
 
     dependencies = [
         ('tests', '0001_initial'),
